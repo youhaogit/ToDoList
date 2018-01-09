@@ -3,7 +3,9 @@ package com.youhao.todolist;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.NotificationManager;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -36,6 +38,7 @@ public class TodoEditActivity extends AppCompatActivity implements
 
     public static final String KEY_TODO = "todo";
     public static final String KEY_TODO_ID = "todo_id";
+    public static final String KEY_NOTIFICATION_ID = "notification_id";
 
     private EditText todoEdit;
     private TextView dateTv;
@@ -56,6 +59,14 @@ public class TodoEditActivity extends AppCompatActivity implements
                 : null; // if this activity is for creating a new todo_item, set remindDate to null
 
         setupUI();
+        cancelNotificationIfNeeded();
+    }
+
+    private void cancelNotificationIfNeeded() {
+        int notificationId = getIntent().getIntExtra(KEY_NOTIFICATION_ID, -1);
+        if (notificationId != -1) {
+            ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).cancel(notificationId);
+        }
     }
 
     @Override
